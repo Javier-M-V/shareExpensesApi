@@ -7,14 +7,14 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jmv.expenses.dao.PersonDao;
+import com.jmv.expenses.dao.PersonRepository;
 import com.jmv.expenses.models.Person;
 
 @Service
 public class PersonService implements IPersonService{
 
 	@Autowired
-	private PersonDao personDao;
+	private PersonRepository personDao;
 	
 	@Override
 	public Person findById(Long id) {
@@ -33,7 +33,5 @@ public class PersonService implements IPersonService{
 		
 		return StreamSupport.stream(personDao.findAll().spliterator(), false)
 	    .collect(Collectors.toList());
-		
-		//return personDao.findAll();
 	}
 }

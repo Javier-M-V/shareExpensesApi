@@ -5,14 +5,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jmv.expenses.dao.GroupDao;
+import com.jmv.expenses.dao.GroupRepository;
 import com.jmv.expenses.models.Group;
 
 @Service
 public class GroupService implements IGroupService{
 	
 	@Autowired
-	private GroupDao groupDao;
+	private GroupRepository groupDao;
 
 	@Override
 	public Group findById(Long id) {

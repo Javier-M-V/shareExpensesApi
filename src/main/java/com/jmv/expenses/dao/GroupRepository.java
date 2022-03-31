@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.jmv.expenses.models.Group;
 
-public interface GroupDao extends CrudRepository<Group, Long> {
+public interface GroupRepository extends CrudRepository<Group, Long> {
 
 }

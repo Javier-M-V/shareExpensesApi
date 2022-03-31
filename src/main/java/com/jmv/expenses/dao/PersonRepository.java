@@ -4,7 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.jmv.expenses.models.Person;
 
-public interface PersonDao extends CrudRepository<Person, Long> {
+public interface PersonRepository extends CrudRepository<Person, Long> {
 	
-
 }

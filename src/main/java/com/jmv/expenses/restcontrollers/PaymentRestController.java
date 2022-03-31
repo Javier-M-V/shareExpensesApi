@@ -9,27 +9,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jmv.expenses.models.Person;
-import com.jmv.expenses.services.IPersonService;
+import com.jmv.expenses.models.Payment;
+import com.jmv.expenses.services.IPaymentService;
 
-@RequestMapping("/person")
+@RequestMapping("/payment")
 @RestController
-public class PersonRestService {
+public class PaymentRestController {
 	
 	@Autowired
-	private IPersonService personService;
+	private IPaymentService paymentService;
 	
 	@GetMapping(value = "/all")
-	public @ResponseBody List<Person> getAll() {
+	public @ResponseBody List<Payment> getAllPayments(){
 		
-		return personService.findAll();
+		return paymentService.getAllPayments();
 	}
 	
-	@GetMapping(value = "/get")
-	public @ResponseBody Person getById(@RequestParam long id) {
+	@GetMapping(value = "/bygroup")
+	public @ResponseBody List<Payment> getAllPaymentsByGroupId(@RequestParam long id){
 		
-		return personService.findById(id);
+		return paymentService.getAllPaymentsByGroupId(id);
 	}
-	
-	
 }
