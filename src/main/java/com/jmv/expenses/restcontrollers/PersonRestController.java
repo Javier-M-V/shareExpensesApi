@@ -3,6 +3,8 @@ package com.jmv.expenses.restcontrollers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,20 +24,20 @@ public class PersonRestController {
 	@Autowired
 	private IPersonService personService;
 	
-	@GetMapping(value = "/all")
-	public @ResponseBody List<Person> getAll() {
+	@GetMapping
+	public CollectionModel<Person> getAll() {
 		
-		return personService.findAll();
+		return CollectionModel.of(personService.findAll());
 	}
 	
-	@GetMapping(value = "/get")
-	public @ResponseBody Person getById(@RequestParam long id) {
+	@GetMapping(value = "/")
+	public EntityModel<Person> getById(@RequestParam long id) {
 		
-		return personService.findById(id);
+		return EntityModel.of(personService.findById(id));
 	}
 	
 	@PostMapping(value = "/post", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public void savePerson(@RequestBody Person person) { //!!! Serializador
+	public void post(@RequestBody Person person) { 
 		
 		personService.save(person);
 	}

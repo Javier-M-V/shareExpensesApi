@@ -20,8 +20,8 @@ public class GroupRestController {
 	@Autowired
 	IGroupService groupService;
 	
-	@PostMapping(value = "/postperson", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public void getAllPayments(@RequestBody Group group){
+	@PostMapping(value = "/post", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public void post(@RequestBody Group group){
 		
 		groupService.save(group);
 	}

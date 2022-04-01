@@ -9,5 +9,6 @@ public interface IPaymentService {
 	public List<Payment> getAllPaymentsByGroupId (Long id);
 	
 	public List<Payment> getAllPayments();
-
+	
+	public List<Payment> getAllPaymentsByUser(Long id);
 }
