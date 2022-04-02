@@ -10,11 +10,10 @@ public interface IPersonService {
 	public Person findById(Long id); 
 	
 	public void save(Person person);
-	
-	public void update(Person person, Long id);
-	
+
 	public List<Person> findAll();
 
 	public void addPersonToGroup(PersonGroupDTO personGroup);
-	
+
+	List<Person> findAllFromGroup(Long id);
 }

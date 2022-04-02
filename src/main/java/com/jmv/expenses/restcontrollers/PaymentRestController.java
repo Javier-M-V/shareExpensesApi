@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.expenses.dto.BalanceSheetDTO;
+import com.jmv.expenses.dto.PaymentDTO;
 import com.jmv.expenses.models.Payment;
 import com.jmv.expenses.services.api.IPaymentService;
 
@@ -44,7 +46,7 @@ public class PaymentRestController {
 	}
 	
 	@PostMapping(value = "/post")
-	public void post(@RequestParam Payment payment){
+	public void post(@RequestBody PaymentDTO payment){
 		
 		paymentService.save(payment);
 	}

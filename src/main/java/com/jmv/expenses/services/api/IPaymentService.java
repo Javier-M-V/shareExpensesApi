@@ -3,6 +3,7 @@ package com.jmv.expenses.services.api;
 import java.util.List;
 
 import com.jmv.expenses.dto.BalanceSheetDTO;
+import com.jmv.expenses.dto.PaymentDTO;
 import com.jmv.expenses.models.Payment;
 
 public interface IPaymentService {
@@ -15,5 +16,5 @@ public interface IPaymentService {
 	
 	public List<BalanceSheetDTO> getBalanceOfGroup(Long id);
 	
-	public void save(Payment payment);
+	public void save(PaymentDTO payment);
 }

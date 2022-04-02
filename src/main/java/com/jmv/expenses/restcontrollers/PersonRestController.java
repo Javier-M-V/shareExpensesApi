@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.expenses.dto.PersonGroupDTO;
 import com.jmv.expenses.models.Person;
+import com.jmv.expenses.services.api.IGroupService;
 import com.jmv.expenses.services.api.IPersonService;
 
 @RequestMapping("/person")
@@ -45,5 +46,11 @@ public class PersonRestController {
 	public void put(@RequestBody PersonGroupDTO personGroup) { 
 		
 		personService.addPersonToGroup(personGroup);	
+	}
+	
+	@GetMapping(value = "/group")
+	public CollectionModel<Person> get(@RequestParam long id) {
+		
+		return CollectionModel.of(personService.findAllFromGroup(id));
 	}
 }
