@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,14 +30,14 @@ public class GroupServiceTest extends TestCase {
 	private GroupService groupService;
 	
 	@Mock
-	private GroupRepository repo;
+	private GroupRepository groupRepo;
 
 	static Group group;
 	
 	static Iterable<Group> iterableGroup;
 	
-	@BeforeEach
-	public void before() {
+	@BeforeAll
+	static void setup() {
 		
 		group = new Group();
 		group.setId(1L);
@@ -49,22 +49,30 @@ public class GroupServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_findById_returns_one() {
+	void test_findById_returns_one() {
 		
-		Mockito.when(repo.findById(Mockito.anyLong())).thenReturn(Optional.of(group));
+		Mockito.when(groupRepo.findById(Mockito.anyLong())).thenReturn(Optional.of(group));
 		
 		groupService.findById(1L);
 		
-		verify(repo, times(1)).findById(Mockito.anyLong());
+		verify(groupRepo, times(1)).findById(Mockito.anyLong());
 	}
 	
 	@Test
-	public void test_findByIdName() {
+	void test_findByIdName() {
 		
-		Mockito.when(repo.findByNameGroup(Mockito.anyString())).thenReturn(iterableGroup);
+		Mockito.when(groupRepo.findByNameGroup(Mockito.anyString())).thenReturn(iterableGroup);
 		
 		groupService.findByNameGroup("friends");
 		
-		verify(repo, times(1)).findByNameGroup(Mockito.anyString());
+		verify(groupRepo, times(1)).findByNameGroup(Mockito.anyString());
+	}
+	
+	@Test
+	void test_save_calls_repo() {
+		
+		groupService.save(group);
+		
+		verify(groupRepo, times(1)).save(Mockito.any(Group.class));
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -53,10 +53,8 @@ public class PersonServiceTest extends TestCase {
 	
 	static List<Person> listPersons;
 	
-	
-	
-	@BeforeEach
-	public void beforeEach() {
+	@BeforeAll
+	static void setup() {
 		
 		group = new Group();
 		person = new Person();
@@ -71,7 +69,7 @@ public class PersonServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_find_by_id_finds_one() {
+	void test_find_by_id_finds_one() {
 		
 		Mockito.when(personRepo.findById(Mockito.anyLong())).thenReturn(opPerson);
 		
@@ -87,7 +85,7 @@ public class PersonServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_find_by_id_throws_PersonNotFound() {
+	void test_find_by_id_throws_PersonNotFound() {
 		
 		Mockito.when(personRepo.findById(Mockito.anyLong())).thenReturn(opPersonNull);
 		
@@ -101,7 +99,7 @@ public class PersonServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_save_calls_repository() {
+	void test_save_calls_repository() {
 		
 		personService.save(new Person());
 		
@@ -109,7 +107,7 @@ public class PersonServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_findAllFromGroup_finds_group_and_persons() {
+	void test_findAllFromGroup_finds_group_and_persons() {
 		
 		Mockito.when(groupRepo.findById(Mockito.anyLong())).thenReturn(opGroup);
 		Mockito.when(personRepo.findAllById(Mockito.anyList())).thenReturn(listPersons);
@@ -129,7 +127,7 @@ public class PersonServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_findAllFromGroup_throws_GroupNotFoundException() {
+	void test_findAllFromGroup_throws_GroupNotFoundException() {
 		
 		Mockito.when(groupRepo.findById(Mockito.anyLong())).thenReturn(opGroupNull);
 	
@@ -144,7 +142,7 @@ public class PersonServiceTest extends TestCase {
 	}
 	
 	@Test
-	public void test_addPersonToGroup_calls_save() {
+	void test_addPersonToGroup_calls_save() {
 		
 		Mockito.when(personRepo.findById(Mockito.anyLong())).thenReturn(opPerson);
 		Mockito.when(groupRepo.findById(Mockito.anyLong())).thenReturn(opGroup);
