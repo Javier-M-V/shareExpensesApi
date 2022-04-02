@@ -14,7 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import javax.persistence.JoinColumn;
 
@@ -33,14 +34,14 @@ public class Person {
 	@Column(name = "surname", nullable = false)
 	private String surname;
 	
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToMany
 	@JoinTable(name = "groups_persons", 
 	joinColumns = @JoinColumn(name = "person_id", nullable=false), 
 	inverseJoinColumns = @JoinColumn(name = "group_id", nullable=false))
 	private List<Group> groupList;
 	
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy="PersonPaid" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Payment> listPayments;
 
@@ -68,6 +69,7 @@ public class Person {
 		this.surname = surname;
 	}
 
+	
 	public List<Group> getGroupList() {
 		return groupList;
 	}

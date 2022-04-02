@@ -6,17 +6,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jmv.expenses.dao.GroupRepository;
 import com.jmv.expenses.dao.PaymentRepository;
 import com.jmv.expenses.dao.PersonRepository;
-import com.jmv.expenses.dto.BalanceSheet;
+import com.jmv.expenses.dto.BalanceSheetDTO;
+import com.jmv.expenses.exception.PersonNotFoundException;
 import com.jmv.expenses.models.Group;
 import com.jmv.expenses.models.Payment;
 import com.jmv.expenses.models.Person;
-import com.jmv.expenses.support.ApiConstants;
 
 @Service
 public class PaymentService implements IPaymentService {
@@ -33,14 +34,13 @@ public class PaymentService implements IPaymentService {
 	@Override
 	public List<Payment> getAllPaymentsByGroupId(Long id) {
 		
-		Iterable<Long> ids = findPaymentIdsFromGroup(id);
+		Iterable<Long> ids = this.findPaymentIdsFromGroup(id);
 		
 		return StreamSupport.stream(paymentRepo.findByIdInOrderByDateOfPaymentDesc(ids).spliterator(), false)
 				.collect(Collectors.toList());
 	}
 	
 	public List<Payment> getAllPayments() {
-		
 		
 		return StreamSupport.stream(paymentRepo.findAll().spliterator(), false)
 			    .collect(Collectors.toList());
@@ -55,12 +55,19 @@ public class PaymentService implements IPaymentService {
 			return opPerson.get().getListPayments();
 		}
 		
-		else return new ArrayList<Payment>();
+		else {
+			throw new PersonNotFoundException(id);
+		}
 	}
 	
-	public List<BalanceSheet> getBalanceOfGroup(Long id) {
+	public void save(Payment payment) {
+		
+		paymentRepo.save(payment);
+	}
+	
+	public List<BalanceSheetDTO> getBalanceOfGroup(Long id) {
 
-		List<BalanceSheet> balance = new ArrayList<>();
+		List<BalanceSheetDTO> balance = new ArrayList<>();
 
 		Group group = groupRepo.findById(id).get();
 
@@ -73,7 +80,7 @@ public class PaymentService implements IPaymentService {
 
 			Double personSum = item.getListPayments().stream().mapToDouble(Payment::getAmount).sum();
 			Double debt = avg - personSum;
-			balance.add(new BalanceSheet(item.getName(), item.getSurname(), debt));
+			balance.add(new BalanceSheetDTO(item.getName(), item.getSurname(), Precision.round(debt,2)));
 		});
 
 		return balance;

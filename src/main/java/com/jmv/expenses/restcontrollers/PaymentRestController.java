@@ -3,11 +3,12 @@ package com.jmv.expenses.restcontrollers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jmv.expenses.dto.BalanceSheet;
+import com.jmv.expenses.dto.BalanceSheetDTO;
 import com.jmv.expenses.models.Payment;
 import com.jmv.expenses.services.IPaymentService;
 
@@ -37,8 +38,14 @@ public class PaymentRestController {
 	}
 	
 	@GetMapping(value = "/balance")
-	public CollectionModel<BalanceSheet> getBalanceOfGroup(@RequestParam long id){
+	public CollectionModel<BalanceSheetDTO> getBalanceOfGroup(@RequestParam long id){
 		
 		return CollectionModel.of(paymentService.getBalanceOfGroup(id));
+	}
+	
+	@PostMapping(value = "/post")
+	public void post(@RequestParam Payment payment){
+		
+		paymentService.save(payment);
 	}
 }

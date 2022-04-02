@@ -1,6 +1,6 @@
 package com.jmv.expenses.dto;
 
-public class BalanceSheet {
+public class BalanceSheetDTO {
 	
 	private String name;
 	
@@ -8,7 +8,7 @@ public class BalanceSheet {
 	
 	private Double balance;
 	
-	public BalanceSheet(String name, String surname, Double balance) {
+	public BalanceSheetDTO(String name, String surname, Double balance) {
 		super();
 		this.name = name;
 		this.surname = surname;
