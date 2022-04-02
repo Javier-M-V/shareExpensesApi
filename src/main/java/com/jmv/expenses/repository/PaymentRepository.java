@@ -1,4 +1,4 @@
-package com.jmv.expenses.dao;
+package com.jmv.expenses.repository;
 
 import java.util.List;
 

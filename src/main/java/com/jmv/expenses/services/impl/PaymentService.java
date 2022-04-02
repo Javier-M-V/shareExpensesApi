@@ -1,4 +1,4 @@
-package com.jmv.expenses.services;
+package com.jmv.expenses.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +10,15 @@ import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jmv.expenses.dao.GroupRepository;
-import com.jmv.expenses.dao.PaymentRepository;
-import com.jmv.expenses.dao.PersonRepository;
 import com.jmv.expenses.dto.BalanceSheetDTO;
 import com.jmv.expenses.exception.PersonNotFoundException;
 import com.jmv.expenses.models.Group;
 import com.jmv.expenses.models.Payment;
 import com.jmv.expenses.models.Person;
+import com.jmv.expenses.repository.GroupRepository;
+import com.jmv.expenses.repository.PaymentRepository;
+import com.jmv.expenses.repository.PersonRepository;
+import com.jmv.expenses.services.api.IPaymentService;
 
 @Service
 public class PaymentService implements IPaymentService {

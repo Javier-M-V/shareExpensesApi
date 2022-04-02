@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.expenses.dto.PersonGroupDTO;
 import com.jmv.expenses.models.Person;
-import com.jmv.expenses.services.IPersonService;
+import com.jmv.expenses.services.api.IPersonService;
 
 @RequestMapping("/person")
 @RestController

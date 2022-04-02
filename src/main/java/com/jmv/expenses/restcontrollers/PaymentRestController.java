@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.expenses.dto.BalanceSheetDTO;
 import com.jmv.expenses.models.Payment;
-import com.jmv.expenses.services.IPaymentService;
+import com.jmv.expenses.services.api.IPaymentService;
 
 @RequestMapping("/payment")
 @RestController

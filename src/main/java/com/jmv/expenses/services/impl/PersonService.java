@@ -1,4 +1,4 @@
-package com.jmv.expenses.services;
+package com.jmv.expenses.services.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,11 +7,12 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jmv.expenses.dao.GroupRepository;
-import com.jmv.expenses.dao.PersonRepository;
 import com.jmv.expenses.dto.PersonGroupDTO;
 import com.jmv.expenses.models.Group;
 import com.jmv.expenses.models.Person;
+import com.jmv.expenses.repository.GroupRepository;
+import com.jmv.expenses.repository.PersonRepository;
+import com.jmv.expenses.services.api.IPersonService;
 
 @Service
 public class PersonService implements IPersonService{

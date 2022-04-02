@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.expenses.exception.GroupNotFoundException;
 import com.jmv.expenses.models.Group;
-import com.jmv.expenses.services.IGroupService;
+import com.jmv.expenses.services.api.IGroupService;
 
 
 @RequestMapping("/group")

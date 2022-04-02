@@ -1,4 +1,4 @@
-package com.jmv.expenses.services;
+package com.jmv.expenses.services.api;
 
 import java.util.List;
 
