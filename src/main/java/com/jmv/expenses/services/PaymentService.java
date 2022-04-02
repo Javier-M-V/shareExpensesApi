@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import com.jmv.expenses.dao.GroupRepository;
 import com.jmv.expenses.dao.PaymentRepository;
 import com.jmv.expenses.dao.PersonRepository;
+import com.jmv.expenses.dto.BalanceSheet;
 import com.jmv.expenses.models.Group;
 import com.jmv.expenses.models.Payment;
 import com.jmv.expenses.models.Person;
+import com.jmv.expenses.support.ApiConstants;
 
 @Service
 public class PaymentService implements IPaymentService {
@@ -31,9 +33,9 @@ public class PaymentService implements IPaymentService {
 	@Override
 	public List<Payment> getAllPaymentsByGroupId(Long id) {
 		
-		List<Long> ids = findPaymentIdsFromGroup(id);
+		Iterable<Long> ids = findPaymentIdsFromGroup(id);
 		
-		return StreamSupport.stream(paymentRepo.findAllById(ids).spliterator(), false)
+		return StreamSupport.stream(paymentRepo.findByIdInOrderByDateOfPaymentDesc(ids).spliterator(), false)
 				.collect(Collectors.toList());
 	}
 	
@@ -54,6 +56,27 @@ public class PaymentService implements IPaymentService {
 		}
 		
 		else return new ArrayList<Payment>();
+	}
+	
+	public List<BalanceSheet> getBalanceOfGroup(Long id) {
+
+		List<BalanceSheet> balance = new ArrayList<>();
+
+		Group group = groupRepo.findById(id).get();
+
+		Double sum = group.getPersonsList().stream().flatMap(item -> item.getListPayments().stream())
+				.mapToDouble(Payment::getAmount).sum();
+
+		Double avg = sum / group.getPersonsList().size();
+
+		group.getPersonsList().forEach(item -> {
+
+			Double personSum = item.getListPayments().stream().mapToDouble(Payment::getAmount).sum();
+			Double debt = avg - personSum;
+			balance.add(new BalanceSheet(item.getName(), item.getSurname(), debt));
+		});
+
+		return balance;
 	}
 	
 	private List<Long> findPaymentIdsFromGroup(Long id) {

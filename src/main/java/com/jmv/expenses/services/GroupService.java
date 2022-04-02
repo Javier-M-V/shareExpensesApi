@@ -15,9 +15,9 @@ public class GroupService implements IGroupService{
 	private GroupRepository groupDao;
 
 	@Override
-	public Group findById(Long id) {
+	public Optional<Group> findById(Long id) {
 		
-		return groupDao.findById(id).get();
+		return groupDao.findById(id);
 	}
 	
 	public void save(Group group) {
