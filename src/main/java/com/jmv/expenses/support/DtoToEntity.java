@@ -8,6 +8,8 @@ import com.jmv.expenses.models.Person;
 
 public class DtoToEntity {
 	
+	private DtoToEntity() {}	
+	
 	public static Payment paymentDtoToPaymentEntity(PaymentDTO payment, Optional<Person> opPerson) {
 
 		Payment pay = new Payment();

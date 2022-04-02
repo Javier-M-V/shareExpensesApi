@@ -12,7 +12,6 @@ public class PaymentDTO {
 
 	private Double amount;
 
-
 	public long getIdPerson() {
 		return idPerson;
 	}

@@ -1,17 +1,19 @@
 package com.javier.expenses.services;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Arrays;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.jmv.expenses.models.Group;
 import com.jmv.expenses.models.Person;
@@ -20,18 +22,21 @@ import com.jmv.expenses.services.impl.GroupService;
 
 import junit.framework.TestCase;
 
-@RunWith(PowerMockRunner.class)
+
+@ExtendWith(MockitoExtension.class)
 public class GroupServiceTest extends TestCase {
 	
 	@InjectMocks
 	private GroupService groupService;
 	
 	@Mock
-	private GroupRepository dao;
+	private GroupRepository repo;
 
 	static Group group;
 	
-	@Before
+	static Iterable<Group> iterableGroup;
+	
+	@BeforeEach
 	public void before() {
 		
 		group = new Group();
@@ -39,15 +44,27 @@ public class GroupServiceTest extends TestCase {
 		List<Person> personList = new ArrayList<>();
 		personList.add(new Person());
 		group.setPersonsList(personList);
+		
+		iterableGroup = new ArrayList<Group>();
 	}
 	
 	@Test
 	public void test_findById_returns_one() {
 		
-		Mockito.when(dao.findById(Mockito.anyLong())).thenReturn(Optional.of(group));
+		Mockito.when(repo.findById(Mockito.anyLong())).thenReturn(Optional.of(group));
 		
-		Optional<Group> result = groupService.findById(1L);
+		groupService.findById(1L);
 		
-		assertNotNull(result.get());
+		verify(repo, times(1)).findById(Mockito.anyLong());
+	}
+	
+	@Test
+	public void test_findByIdName() {
+		
+		Mockito.when(repo.findByNameGroup(Mockito.anyString())).thenReturn(iterableGroup);
+		
+		groupService.findByNameGroup("friends");
+		
+		verify(repo, times(1)).findByNameGroup(Mockito.anyString());
 	}
 }
