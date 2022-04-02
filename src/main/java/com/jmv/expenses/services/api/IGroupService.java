@@ -8,6 +8,8 @@ public interface IGroupService {
 	
 	public Optional<Group> findById(Long id); 
 	
+	public Iterable<Group> findByNameGroup(String name); 
+	
 	public void save(Group group);
 
 }
