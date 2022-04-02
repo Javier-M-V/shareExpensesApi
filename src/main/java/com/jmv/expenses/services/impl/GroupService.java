@@ -33,6 +33,5 @@ public class GroupService implements IGroupService{
 	public List<Group> findByNameGroup(String name) {
 		
 		return StreamSupport.stream(groupRepo.findByNameGroup(name).spliterator(), false).collect(Collectors.toList());
-		
 	}
 }

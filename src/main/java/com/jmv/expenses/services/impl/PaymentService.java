@@ -56,7 +56,7 @@ public class PaymentService implements IPaymentService {
 		if (opPerson.isPresent()) {
 
 			return opPerson.get().getListPayments();
-			
+
 		} else {
 			throw new PersonNotFoundException(id);
 		}
@@ -71,7 +71,7 @@ public class PaymentService implements IPaymentService {
 			Payment pay = DtoToEntity.paymentDtoToPaymentEntity(payment, opPerson);
 
 			paymentRepo.save(pay);
-			
+
 		} else {
 			throw new PersonNotFoundException(payment.getIdPerson());
 		}
@@ -95,7 +95,7 @@ public class PaymentService implements IPaymentService {
 				Double debt = avg - personSum;
 				balance.add(new BalanceSheetDTO(item.getName(), item.getSurname(), Precision.round(debt, 2)));
 			});
-			
+
 			return balance;
 		} else {
 			throw new GroupNotFoundException(id);
@@ -112,7 +112,7 @@ public class PaymentService implements IPaymentService {
 					.map(Payment::getId).collect(Collectors.toList());
 
 			return ids;
-			
+
 		} else {
 			throw new GroupNotFoundException(id);
 		}
