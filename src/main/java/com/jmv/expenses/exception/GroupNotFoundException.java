@@ -12,8 +12,4 @@ public class GroupNotFoundException extends ResponseStatusException {
 	public GroupNotFoundException(long id) {
 		super(HttpStatus.NOT_FOUND, DESCRIPTION_404.concat(String.valueOf(id)));
 	}
-	
-	public GroupNotFoundException(String name) {
-		super(HttpStatus.NOT_FOUND, DESCRIPTION_404.concat(String.valueOf(name)));
-	}
 }

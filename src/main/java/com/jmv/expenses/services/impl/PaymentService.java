@@ -92,7 +92,7 @@ public class PaymentService implements IPaymentService {
 			group.get().getPersonsList().forEach(item -> {
 
 				Double personSum = item.getListPayments().stream().mapToDouble(Payment::getAmount).sum();
-				Double debt = avg - personSum;
+				Double debt = personSum - avg;
 				balance.add(new BalanceSheetDTO(item.getName(), item.getSurname(), Precision.round(debt, 2)));
 			});
 
