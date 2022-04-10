@@ -1,5 +1,6 @@
 package com.javier.expenses.services;
 
+import static org.mockito.Mockito.mockitoSession;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -16,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jmv.expenses.dto.BalanceSheetDTO;
 import com.jmv.expenses.dto.PaymentDTO;
@@ -28,6 +30,7 @@ import com.jmv.expenses.repository.GroupRepository;
 import com.jmv.expenses.repository.PaymentRepository;
 import com.jmv.expenses.repository.PersonRepository;
 import com.jmv.expenses.services.impl.PaymentService;
+import com.jmv.expenses.support.DtoToEntity;
 
 import junit.framework.TestCase;
 
@@ -45,6 +48,9 @@ public class PaymentServiceTest extends TestCase {
 
 	@Mock
 	private PersonRepository personRepo;
+	
+	@Mock
+	private DtoToEntity dtoToEntity;
 
 	private static final Date NOW = new Date();
 	
@@ -180,7 +186,8 @@ public class PaymentServiceTest extends TestCase {
 	@Test
 	void save_calls_repo_save() {
 		
-		Mockito.when(personRepo.findById(5L)).thenReturn(opPerson);
+		Mockito.when(personRepo.findById(5L)).thenReturn(opPerson);		
+		Mockito.when(dtoToEntity.paymentDtoToPaymentEntity(Mockito.any(PaymentDTO.class), Mockito.any(Person.class))).thenReturn(new Payment());
 		
 		try {
 			paymentService.save(paymentDto);

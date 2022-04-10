@@ -2,6 +2,7 @@ package com.jmv.expenses.restcontrollers;
 
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -26,7 +27,7 @@ public class GroupRestController {
 	@Autowired
 	IGroupService groupService;
 	
-	@PostMapping(value = "/post", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@PostMapping(value = "/", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public void post(@RequestBody Group group){
 		
 		groupService.save(group);
@@ -37,13 +38,7 @@ public class GroupRestController {
 		
 		Optional<Group> group = groupService.findById(id);
 
-		if(group.isPresent()) {
-			
-			return EntityModel.of(group.get());
-		}
-		else {
-			throw new GroupNotFoundException(id);
-		}		
+		return EntityModel.of(group.orElseThrow(()-> new GroupNotFoundException(id)));	
 	}
 	
 	@GetMapping(value = "/{name}")

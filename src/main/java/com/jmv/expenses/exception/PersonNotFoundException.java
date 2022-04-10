@@ -8,6 +8,6 @@ public class PersonNotFoundException extends ResponseStatusException {
 	private static final long serialVersionUID = 1654077752010450594L;
 
 	public PersonNotFoundException(long id) {
-		super(HttpStatus.NOT_FOUND, "Person not found ".concat(String.valueOf(id)));
+		super(HttpStatus.NOT_FOUND, "Person not found, id:".concat(String.valueOf(id)));
 	}
 }

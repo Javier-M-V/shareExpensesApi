@@ -29,15 +29,7 @@ public class PersonService implements IPersonService {
 	@Override
 	public Person findById(Long id) {
 
-		Optional<Person> person = personRepo.findById(id);
-
-		if(person.isPresent()) {
-			
-			return person.get();
-		}
-		else {
-			throw new PersonNotFoundException(id);
-		} 
+		return this.findPersonById(id);
 	}
 
 	@Override
@@ -55,29 +47,33 @@ public class PersonService implements IPersonService {
 	@Override
 	public List<Person> findAllFromGroup(Long id) {
 
-		Optional<Group> group = groupRepo.findById(id);
+		Group group = this.findGroupById(id);
 		
-		if(group.isPresent()) {
-			
-			List<Long> ids = group.get().getPersonsList().stream()
+		List<Long> ids = group.getPersonsList().stream()
 					.map(Person::getId).collect(Collectors.toList());
 
-			return StreamSupport.stream(personRepo.findAllById(ids).spliterator(), false).collect(Collectors.toList());
-		}
-		else {
-			throw new GroupNotFoundException(id);
-		}
+		return StreamSupport.stream(personRepo.findAllById(ids).spliterator(), false).collect(Collectors.toList());
 	}
 
 	@Override
 	public void addPersonToGroup(PersonGroupDTO personGroup) {
 
-		Person person = this.findById(personGroup.getPersonId());
+		Person person = this.findPersonById(personGroup.getPersonId());
 
-		Group group = groupRepo.findById(personGroup.getGroupId()).get();
+		Group group = this.findGroupById(personGroup.getGroupId());
 
 		person.getGroupList().add(group);
 
 		personRepo.save(person);
+	}
+
+	private Person findPersonById(Long id) {
+		
+		return personRepo.findById(id).orElseThrow(()-> new PersonNotFoundException(id));
+	}
+	
+	private Group findGroupById(Long id) {
+		
+		return groupRepo.findById(id).orElseThrow(()-> new GroupNotFoundException(id));
 	}
 }
