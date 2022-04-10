@@ -2,7 +2,6 @@ package com.jmv.expenses.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,6 +33,9 @@ public class PaymentService implements IPaymentService {
 
 	@Autowired
 	private PersonRepository personRepo;
+	
+	@Autowired
+	private DtoToEntity dtoToEntity;
 
 	@Override
 	public List<Payment> getAllPaymentsByGroupId(Long id) {
@@ -51,70 +53,49 @@ public class PaymentService implements IPaymentService {
 
 	public List<Payment> getAllPaymentsByUser(Long id) {
 
-		Optional<Person> opPerson = personRepo.findById(id);
-
-		if (opPerson.isPresent()) {
-
-			return opPerson.get().getListPayments();
-
-		} else {
-			throw new PersonNotFoundException(id);
-		}
+		Person person = this.findPersonById(id);
+		return person.getListPayments();
 	}
 
 	public void save(PaymentDTO payment) {
 
-		Optional<Person> opPerson = personRepo.findById(payment.getIdPerson());
+		Person person = this.findPersonById(payment.getIdPerson());
+		Payment pay = dtoToEntity.paymentDtoToPaymentEntity(payment, person);
 
-		if (opPerson.isPresent()) {
-
-			Payment pay = DtoToEntity.paymentDtoToPaymentEntity(payment, opPerson);
-
-			paymentRepo.save(pay);
-
-		} else {
-			throw new PersonNotFoundException(payment.getIdPerson());
-		}
+		paymentRepo.save(pay);
 	}
 
 	public List<BalanceSheetDTO> getBalanceOfGroup(Long id) {
 
 		List<BalanceSheetDTO> balance = new ArrayList<>();
-		Optional<Group> group = groupRepo.findById(id);
+		Group group = groupRepo.findById(id).orElseThrow(()-> new GroupNotFoundException(id));
 
-		if (group.isPresent()) {
+		Double sum = group.getPersonsList().stream().flatMap(item -> item.getListPayments().stream())
+				.mapToDouble(Payment::getAmount).sum();
 
-			Double sum = group.get().getPersonsList().stream().flatMap(item -> item.getListPayments().stream())
-					.mapToDouble(Payment::getAmount).sum();
+		Double avg = sum / group.getPersonsList().size();
 
-			Double avg = sum / group.get().getPersonsList().size();
+		group.getPersonsList().forEach(item -> {
 
-			group.get().getPersonsList().forEach(item -> {
+			Double personSum = item.getListPayments().stream().mapToDouble(Payment::getAmount).sum();
+			Double debt = personSum - avg;
+			balance.add(new BalanceSheetDTO(item.getName(), item.getSurname(), Precision.round(debt, 2)));
+		});
 
-				Double personSum = item.getListPayments().stream().mapToDouble(Payment::getAmount).sum();
-				Double debt = personSum - avg;
-				balance.add(new BalanceSheetDTO(item.getName(), item.getSurname(), Precision.round(debt, 2)));
-			});
-
-			return balance;
-		} else {
-			throw new GroupNotFoundException(id);
-		}
+		return balance;
 	}
 
 	private List<Long> findPaymentIdsFromGroup(Long id) {
 
-		Optional<Group> group = groupRepo.findById(id);
-
-		if (group.isPresent()) {
-
-			List<Long> ids = group.get().getPersonsList().stream().flatMap(person -> person.getListPayments().stream())
+		Group group = groupRepo.findById(id).orElseThrow(()-> new GroupNotFoundException(id));
+		List<Long> ids = group.getPersonsList().stream().flatMap(person -> person.getListPayments().stream())
 					.map(Payment::getId).collect(Collectors.toList());
 
-			return ids;
-
-		} else {
-			throw new GroupNotFoundException(id);
-		}
+		return ids;
+	}
+	
+	private Person findPersonById(Long id) {
+		
+		return personRepo.findById(id).orElseThrow(()-> new PersonNotFoundException(id));
 	}
 }

@@ -1,22 +1,21 @@
 package com.jmv.expenses.support;
 
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 import com.jmv.expenses.dto.PaymentDTO;
 import com.jmv.expenses.models.Payment;
 import com.jmv.expenses.models.Person;
 
-public class DtoToEntity {
+@Service
+public class DtoToEntity {	
 	
-	private DtoToEntity() {}	
-	
-	public static Payment paymentDtoToPaymentEntity(PaymentDTO payment, Optional<Person> opPerson) {
+	public Payment paymentDtoToPaymentEntity(PaymentDTO payment, Person person) {
 
 		Payment pay = new Payment();
 		pay.setAmount(payment.getAmount());
 		pay.setDateOfPayment(payment.getDateOfPayment());
 		pay.setDescription(payment.getDescription());
-		pay.setPersonPaid(opPerson.get());
+		pay.setPersonPaid(person);
 		return pay;
 	}
 }
