@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jmv.expenses.dto.PersonGroupDTO;
+import com.jmv.expenses.exception.GroupNotFoundException;
 import com.jmv.expenses.exception.PersonNotFoundException;
 import com.jmv.expenses.models.Group;
 import com.jmv.expenses.models.Person;
@@ -73,6 +74,6 @@ public class PersonService implements IPersonService {
 	
 	private Group findGroupById(Long id) {
 		
-		return groupRepo.findById(id).orElseThrow(()-> new PersonNotFoundException(id));
+		return groupRepo.findById(id).orElseThrow(()-> new GroupNotFoundException(id));
 	}
 }
